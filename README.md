@@ -46,7 +46,7 @@ default is `stderr`, but since a loader is flexible, a different implementation 
 
 ## Command line Interface
 
-A command line interface is available via the `com.kokaja.setl.Simpletl` class which accepts a file name parameter
+A command line interface is available via the `com.kokaja.setl.Setl` class which accepts a file name parameter
 that represents an XML file of a Spring bean schema. The only required bean is named `job` of type
 `com.kokaja.setl.Job` as to be executed by the engine.
 
