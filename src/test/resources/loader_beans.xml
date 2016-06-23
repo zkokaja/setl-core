@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="simpleLoader" class="com.kokaja.setl.load.CSVLoader">
+        <property name="out">
+            <bean class="java.lang.StringBuilder" />
+        </property>
+        <property name="csvConfig">
+            <bean class="com.kokaja.setl.csv.CSVConfig">
+                <property name="header">
+                    <list>
+                        <value>id</value>
+                        <value>first</value>
+                        <value>last</value>
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+</beans>

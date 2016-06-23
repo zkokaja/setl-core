@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="emptyTransformer" class="com.kokaja.setl.transform.BasicTransformer">
+    </bean>
+
+    <bean id="simpleTransformer" class="com.kokaja.setl.transform.BasicTransformer">
+        <property name="transformations">
+            <map>
+                <entry key="category" value-ref="domainValueTransformation" />
+                <entry key="type" value-ref="concatTransformation" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="domainValueTransformation" class="com.kokaja.setl.transform.DVMTransformation">
+        <property name="domainValueMap">
+            <map>
+                <entry key-ref="stringMath" value-ref="stringM" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="stringM" class="com.kokaja.setl.PrimitiveField">
+        <constructor-arg value="M" />
+    </bean>
+
+    <bean id="stringMath" class="com.kokaja.setl.PrimitiveField">
+        <constructor-arg value="math" />
+    </bean>
+
+    <bean id="concatTransformation" class="com.kokaja.setl.transform.ConcatTransformation">
+        <property name="concatProperty" value="name" />
+        <property name="delimiter" value="-" />
+    </bean>
+
+    <bean id="concatTransformation2" class="com.kokaja.setl.transform.ConcatTransformation">
+        <property name="concatProperty" value="value" />
+        <property name="delimiter" value="-" />
+    </bean>
+
+    <bean id="compositeTransformation" class="com.kokaja.setl.transform.CompositeTransformation">
+        <property name="transformations">
+            <list>
+                <ref bean="concatTransformation" />
+                <ref bean="concatTransformation2" />
+            </list>
+        </property>
+    </bean>
+
+    <bean id="compositeTransformer" class="com.kokaja.setl.transform.BasicTransformer">
+        <property name="transformations">
+            <map>
+                <entry key="type" value-ref="compositeTransformation" />
+            </map>
+        </property>
+    </bean>
+</beans>

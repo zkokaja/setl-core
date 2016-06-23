@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- Job configuration -->
+    <bean id="job" class="com.kokaja.setl.Job">
+        <property name="extractor" ref="peopleExtractor" />
+        <property name="transformerMap">
+            <map>
+                <entry key-ref="basicTransformer">
+                    <list>
+                        <ref bean="csvLoader" />
+                    </list>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+    <!-- Extractor configuration -->
+    <bean id="peopleExtractor" class="com.kokaja.setl.extract.CSVExtractor">
+        <constructor-arg type="java.net.URL" value="classpath:people.csv" />
+        <property name="csvConfig">
+            <bean class="com.kokaja.setl.csv.CSVConfig">
+                <property name="header">
+                    <list>
+                        <value>id</value>
+                        <value>first</value>
+                        <value>last</value>
+                        <value>status</value>
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <!-- Transformation configuration -->
+    <bean id="basicTransformer" class="com.kokaja.setl.transform.BasicTransformer">
+        <property name="transformations">
+            <map>
+                <entry key="status" value-ref="domainValueTransformation" />
+                <entry key="first" value-ref="concatTransformation" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="domainValueTransformation" class="com.kokaja.setl.transform.DVMTransformation">
+        <property name="domainValueMap">
+            <map>
+                <entry key-ref="stringAlive" value-ref="stringA" />
+                <entry key-ref="stringDead" value-ref="stringD" />
+            </map>
+        </property>
+    </bean>
+
+    <bean id="stringD" class="com.kokaja.setl.PrimitiveField">
+        <constructor-arg value="D" />
+    </bean>
+
+    <bean id="stringDead" class="com.kokaja.setl.PrimitiveField">
+        <constructor-arg value="Dead" />
+    </bean>
+
+    <bean id="stringA" class="com.kokaja.setl.PrimitiveField">
+        <constructor-arg value="A" />
+    </bean>
+
+    <bean id="stringAlive" class="com.kokaja.setl.PrimitiveField">
+        <constructor-arg value="Alive" />
+    </bean>
+
+    <bean id="concatTransformation" class="com.kokaja.setl.transform.ConcatTransformation">
+        <property name="concatProperty" value="last" />
+    </bean>
+
+    <!-- Loader configuration -->
+    <bean id="csvLoader" class="com.kokaja.setl.load.CSVLoader">
+        <property name="out">
+            <bean class="java.lang.StringBuilder" />
+        </property>
+        <property name="csvConfig">
+            <bean class="com.kokaja.setl.csv.CSVConfig">
+                <property name="header">
+                    <list>
+                        <value>id</value>
+                        <value>first</value>
+                        <value>status</value>
+                    </list>
+                </property>
+            </bean>
+        </property>
+    </bean>
+</beans>
