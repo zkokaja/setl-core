@@ -56,6 +56,3 @@ The test resources have examples of such XML configurations.
 
 * JDBC Extractor/Loader
 * LDAP Extractor/Loader
-* Documentation
-* JUNIT Tests
-* Apache commons-configuration
